@@ -1,100 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>senulwadda | Tech Store</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechZone | Next-Gen Gadgets</title>
+    <style>
+        :root {
+            --bg-dark: #080C14;
+            --bg-card: rgba(16, 24, 40, 0.75);
+            --neon-cyan: #00F0FF;
+            --neon-purple: #8B5CF6;
+            --text-main: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --border-glow: rgba(0, 240, 255, 0.2);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.6; }
+
+        /* Techy Grid Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.15), transparent 50%),
+                        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            z-index: -1;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.2rem 5%; background: rgba(8, 12, 20, 0.9);
+            backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-glow);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--neon-cyan); letter-spacing: 2px; text-shadow: 0 0 10px rgba(0,240,255,0.5); }
+        .search-box { width: 350px; position: relative; }
+        .search-box input {
+            width: 100%; padding: 0.6rem 1rem; border-radius: 8px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border-glow);
+            color: #fff; outline: none; transition: 0.3s;
+        }
+        .search-box input:focus { border-color: var(--neon-cyan); box-shadow: 0 0 12px rgba(0,240,255,0.4); }
+
+        /* Hero Banner */
+        .hero {
+            margin: 2rem 5%; padding: 3rem; border-radius: 16px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(0, 240, 255, 0.1));
+            border: 1px solid var(--border-glow); display: flex; justify-content: space-between; align-items: center;
+        }
+        .hero-badge { background: var(--neon-cyan); color: #000; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.8rem; text-transform: uppercase; }
+
+        /* Categories Nav */
+        .categories { display: flex; gap: 1rem; padding: 1rem 5%; overflow-x: auto; }
+        .cat-btn {
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border-glow);
+            color: var(--text-muted); padding: 0.6rem 1.2rem; border-radius: 20px;
+            cursor: pointer; transition: 0.3s; white-space: nowrap;
+        }
+        .cat-btn.active, .cat-btn:hover { background: var(--neon-cyan); color: #000; font-weight: 600; box-shadow: 0 0 15px rgba(0,240,255,0.4); }
+
+        /* Product Grid */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding: 2rem 5%; }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border-glow);
+            border-radius: 12px; padding: 1.2rem; transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--neon-cyan); box-shadow: 0 8px 25px rgba(0,240,255,0.25); }
+        .card-tag { font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 0.5rem; }
+        .tag-stock { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .tag-offer { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+        .card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #fff; }
+        .card p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+        .price { font-size: 1.3rem; font-weight: bold; color: var(--neon-cyan); }
+        .btn-buy {
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            border: none; color: #fff; padding: 0.6rem 1rem; border-radius: 6px;
+            cursor: pointer; font-weight: 600; transition: 0.3s;
+        }
+        .btn-buy:hover { opacity: 0.9; box-shadow: 0 0 12px rgba(139, 92, 246, 0.6); }
+
+        /* Checkout Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 200; }
+        .modal-content { background: #0F172A; border: 1px solid var(--neon-cyan); padding: 2rem; border-radius: 16px; width: 400px; box-shadow: 0 0 30px rgba(0,240,255,0.3); }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text-muted); }
+        .form-group input { width: 100%; padding: 0.6rem; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glow); color: #fff; }
+        .close-btn { float: right; cursor: pointer; font-size: 1.2rem; color: var(--text-muted); }
+    </style>
 </head>
 <body>
 
-  <!-- Tech Animated Background Grid -->
-  <div class="bg-grid"></div>
-  <div class="glow-overlay"></div>
+    <nav>
+        <div class="logo">TECHZONE</div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search gadgets..." onkeyup="filterProducts()">
+        </div>
+    </nav>
 
-  <!-- Header Section -->
-  <header class="navbar">
-    <div class="logo">
-      <span class="logo-text">senul<span class="highlight">wadda</span></span>
-      <span class="badge">TECH</span>
+    <div class="hero">
+        <div>
+            <span class="hero-badge">Special Offer</span>
+            <h1 style="margin: 0.5rem 0;">Cyber Week Mega Sale</h1>
+            <p style="color: var(--text-muted);">Up to 40% off on Gaming Rigs & Smart Wearables</p>
+        </div>
     </div>
 
-    <div class="search-container">
-      <input type="text" id="searchInput" placeholder="Search iPhones, Samsung Galaxy, MacBooks...">
-      <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <div class="categories">
+        <button class="cat-btn active" onclick="selectCategory('All', this)">All Products</button>
+        <button class="cat-btn" onclick="selectCategory('Smartphones', this)">Smartphones</button>
+        <button class="cat-btn" onclick="selectCategory('Laptops', this)">Laptops</button>
+        <button class="cat-btn" onclick="selectCategory('Audio & Headphones', this)">Audio</button>
+        <button class="cat-btn" onclick="selectCategory('Smartwatches / Wearables', this)">Wearables</button>
+        <button class="cat-btn" onclick="selectCategory('Gaming Accessories', this)">Gaming</button>
     </div>
 
-    <div class="nav-actions">
-      <button class="cart-btn" id="openCartBtn">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span class="cart-count" id="cartCount">0</span>
-      </button>
-    </div>
-  </header>
+    <div class="product-grid" id="productGrid"></div>
 
-  <!-- Main Store Content -->
-  <main class="container">
-    <section class="hero">
-      <h1>Next-Gen Tech Essentials</h1>
-      <p>Explore high-performance smartphones, flagship wearables, and premium gear.</p>
-    </section>
-
-    <!-- Category Filters -->
-    <div class="category-bar">
-      <button class="filter-btn active" data-category="all">All Items</button>
-      <button class="filter-btn" data-category="apple">Apple</button>
-      <button class="filter-btn" data-category="samsung">Samsung</button>
-      <button class="filter-btn" data-category="accessories">Accessories</button>
-    </div>
-
-    <!-- Product Grid -->
-    <div class="product-grid" id="productGrid">
-      <!-- Generated via Javascript -->
-    </div>
-  </main>
-
-  <!-- Sliding Cart Drawer -->
-  <div class="cart-drawer" id="cartDrawer">
-    <div class="cart-header">
-      <h2>Your Cart (<span id="drawerCount">0</span>)</h2>
-      <button class="close-btn" id="closeCartBtn">&times;</button>
-    </div>
-    
-    <div class="cart-body" id="cartItemsContainer">
-      <p class="empty-msg">Your cart is currently empty.</p>
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 style="margin-bottom: 1rem; color: var(--neon-cyan);">Express Checkout</h2>
+            <p id="checkoutProduct" style="margin-bottom: 1rem; color: var(--text-muted);"></p>
+            <form onsubmit="handlePayment(event)">
+                <div class="form-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" required placeholder="Alex Mercer">
+                </div>
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" required placeholder="4532 •••• •••• 8892" maxlength="19">
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex:1;">
+                        <label>Expiry</label>
+                        <input type="text" required placeholder="MM/YY">
+                    </div>
+                    <div class="form-group" style="flex:1;">
+                        <label>CVV</label>
+                        <input type="password" required placeholder="•••" maxlength="4">
+                    </div>
+                </div>
+                <button type="submit" class="btn-buy" style="width: 100%; margin-top: 1rem;">Pay & Confirm Order</button>
+            </form>
+        </div>
     </div>
 
-    <div class="cart-footer">
-      <div class="total-row">
-        <span>Total:</span>
-        <span class="total-price" id="cartTotal">$0.00</span>
-      </div>
-      <button class="checkout-btn" onclick="alert('Checkout simulation: Orders processing disabled.')">Proceed to Checkout</button>
-    </div>
-  </div>
+    <script>
+        const products = [
+            { name: 'Quantum Phone Pro', cat: 'Smartphones', price: '$999', status: 'In Stock', tag: 'Special Offer', desc: '6.7-inch OLED 120Hz display with Neural Chipset.' },
+            { name: 'Nebula Fold X', cat: 'Smartphones', price: '$1,499', status: 'In Stock', tag: 'New Arrival', desc: 'Flexible AMOLED dual screen gadget.' },
+            { name: 'Pulse Lite 5G', cat: 'Smartphones', price: '$399', status: 'Low Stock', tag: 'In Stock', desc: 'Affordable high-speed 5G mobile.' },
+            { name: 'TitanBlade RTX Rig', cat: 'Laptops', price: '$2,499', status: 'In Stock', tag: 'Special Offer', desc: 'Intel i9, RTX 4090, 32GB RAM powerhouse.' },
+            { name: 'CyberBook Air M3', cat: 'Laptops', price: '$1,199', status: 'In Stock', tag: 'New Arrival', desc: 'Ultra-thin carbon fiber chassis.' },
+            { name: 'MatrixStation Pro', cat: 'Laptops', price: '$3,299', status: 'Pre-Order', tag: 'New Arrival', desc: 'Dual-screen workstation for creators.' },
+            { name: 'SonicPulse ANC', cat: 'Audio & Headphones', price: '$249', status: 'In Stock', tag: 'Special Offer', desc: 'Spatial audio with 40h battery life.' },
+            { name: 'NeuralEars TWS', cat: 'Audio & Headphones', price: '$179', status: 'In Stock', tag: 'In Stock', desc: 'Active Noise Canceling wireless earbuds.' },
+            { name: 'ChronoX Cyber Watch', cat: 'Smartwatches / Wearables', price: '$349', status: 'In Stock', tag: 'New Arrival', desc: 'Titanium bezel with biometric tracking.' },
+            { name: 'HoloVisor AR', cat: 'Smartwatches / Wearables', price: '$799', status: 'Pre-Order', tag: 'Special Offer', desc: 'Heads-up display augmented reality glasses.' },
+            { name: 'HyperClick RGB Board', cat: 'Gaming Accessories', price: '$149', status: 'In Stock', tag: 'In Stock', desc: 'Hot-swappable mechanical gaming keyboard.' },
+            { name: 'PrecisionAim Wireless', cat: 'Gaming Accessories', price: '$89', status: 'In Stock', tag: 'In Stock', desc: '26k DPI optical sensor mouse.' }
+        ];
 
-  <div class="backdrop" id="backdrop"></div>
+        let currentCat = 'All';
 
-  <!-- Footer with Contact Info -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <h3>senulwadda</h3>
-        <p>Premium Tech Hardware & Mobile Devices</p>
-      </div>
-      <div class="footer-contact">
-        <h4>Contact Us</h4>
-        <p><i class="fa-solid fa-phone"></i> 0769326681</p>
-        <p><i class="fa-solid fa-location-dot"></i> 50/A, Bandirippuwa, Lunuwila</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 senulwadda Tech Store. All rights reserved.</p>
-    </div>
-  </footer>
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            grid.innerHTML = '';
 
-  <script src="script.js"></script>
+            products.filter(p => {
+                const matchesCat = currentCat === 'All' || p.cat === currentCat;
+                const matchesSearch = p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search);
+                return matchesCat && matchesSearch;
+            }).forEach(p => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div>
+                            <span class="card-tag tag-offer">${p.tag}</span>
+                            <h3>${p.name}</h3>
+                            <p>${p.desc}</p>
+                        </div>
+                        <div>
+                            <span class="card-tag tag-stock">${p.status}</span>
+                            <div class="price-row">
+                                <span class="price">${p.price}</span>
+                                <button class="btn-buy" onclick="openModal('${p.name}', '${p.price}')">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function selectCategory(cat, btn) {
+            currentCat = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderProducts();
+        }
+
+        function filterProducts() { renderProducts(); }
+        function openModal(name, price) {
+            document.getElementById('checkoutProduct').innerText = `Item: ${name} (${price})`;
+            document.getElementById('checkoutModal').style.display = 'flex';
+        }
+        function closeModal() { document.getElementById('checkoutModal').style.display = 'none'; }
+        function handlePayment(e) {
+            e.preventDefault();
+            alert('⚡ Payment Successful! Order confirmed.');
+            closeModal();
+        }
+
+        renderProducts();
+    </script>
 </body>
 </html>
-
