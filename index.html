@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>senulwadda | Tech Store</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Tech Animated Background Grid -->
+  <div class="bg-grid"></div>
+  <div class="glow-overlay"></div>
+
+  <!-- Header Section -->
+  <header class="navbar">
+    <div class="logo">
+      <span class="logo-text">senul<span class="highlight">wadda</span></span>
+      <span class="badge">TECH</span>
+    </div>
+
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search iPhones, Samsung Galaxy, MacBooks...">
+      <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+    <div class="nav-actions">
+      <button class="cart-btn" id="openCartBtn">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Store Content -->
+  <main class="container">
+    <section class="hero">
+      <h1>Next-Gen Tech Essentials</h1>
+      <p>Explore high-performance smartphones, flagship wearables, and premium gear.</p>
+    </section>
+
+    <!-- Category Filters -->
+    <div class="category-bar">
+      <button class="filter-btn active" data-category="all">All Items</button>
+      <button class="filter-btn" data-category="apple">Apple</button>
+      <button class="filter-btn" data-category="samsung">Samsung</button>
+      <button class="filter-btn" data-category="accessories">Accessories</button>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="productGrid">
+      <!-- Generated via Javascript -->
+    </div>
+  </main>
+
+  <!-- Sliding Cart Drawer -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h2>Your Cart (<span id="drawerCount">0</span>)</h2>
+      <button class="close-btn" id="closeCartBtn">&times;</button>
+    </div>
+    
+    <div class="cart-body" id="cartItemsContainer">
+      <p class="empty-msg">Your cart is currently empty.</p>
+    </div>
+
+    <div class="cart-footer">
+      <div class="total-row">
+        <span>Total:</span>
+        <span class="total-price" id="cartTotal">$0.00</span>
+      </div>
+      <button class="checkout-btn" onclick="alert('Checkout simulation: Orders processing disabled.')">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <div class="backdrop" id="backdrop"></div>
+
+  <!-- Footer with Contact Info -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>senulwadda</h3>
+        <p>Premium Tech Hardware & Mobile Devices</p>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact Us</h4>
+        <p><i class="fa-solid fa-phone"></i> 0769326681</p>
+        <p><i class="fa-solid fa-location-dot"></i> 50/A, Bandirippuwa, Lunuwila</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 senulwadda Tech Store. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
