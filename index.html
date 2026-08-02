@@ -1,77 +1,576 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechZone | Next-Gen Gadgets</title>
-    <!-- Link to CSS stylesheet -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechZone | Techy Electronics & Gadgets</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Header Navigation -->
-    <nav>
-        <div class="logo">TECHZONE</div>
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search gadgets (e.g. Samsung, Apple, ROG)..." onkeyup="filterProducts()">
-        </div>
-    </nav>
+  <!-- Top Announcement Bar -->
+  <div class="top-announcement">
+    <span><i class="fa-solid fa-bolt"></i> <strong>TECH-DEALS WEEK:</strong> Free Express Delivery on orders over $99!</span>
+  </div>
 
-    <!-- Hero Promotional Banner -->
-    <div class="hero">
-        <div>
-            <span class="hero-badge">Special Offer</span>
-            <h1 style="margin: 0.5rem 0;">Cyber Week Mega Sale</h1>
-            <p style="color: var(--text-muted);">Get up to 30% off on flagship smartphones & smartwatches</p>
-        </div>
+  <!-- Amazon-style Main Header -->
+  <header class="header">
+    <div class="nav-container">
+     
+      <!-- Brand Logo -->
+      <a href="#" class="brand-logo">
+        <i class="fa-solid fa-microchip logo-icon"></i>
+        <span>Tech<span class="highlight">Zone</span></span>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="search-box">
+        <select class="search-category" aria-label="Select Category">
+          <option value="all">All Tech</option>
+          <option value="smartphones">Smartphones</option>
+          <option value="laptops">Laptops</option>
+          <option value="audio">Audio</option>
+          <option value="wearables">Smartwatches</option>
+          <option value="gaming">Gaming</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="Search smartphones, gaming rigs, headphones...">
+        <button class="search-btn" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+
+      <!-- User Nav Actions -->
+      <div class="nav-actions">
+        <a href="#special-offers" class="touch-btn nav-action-btn">
+          <i class="fa-solid fa-fire"></i>
+          <span>Deals</span>
+        </a>
+        <a href="#" class="touch-btn nav-action-btn">
+          <i class="fa-regular fa-user"></i>
+          <span>Sign In</span>
+        </a>
+        <button class="touch-btn cart-btn" id="cartToggle">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-label">Cart</span>
+          <span class="cart-count" id="cartBadge">0</span>
+        </button>
+      </div>
     </div>
+  </header>
 
-    <!-- Category Filter Tabs -->
-    <div class="categories">
-        <button class="cat-btn active" onclick="selectCategory('All', this)">All Products</button>
-        <button class="cat-btn" onclick="selectCategory('Smartphones', this)">Smartphones</button>
-        <button class="cat-btn" onclick="selectCategory('Smartwatches / Wearables', this)">Smartwatches</button>
-        <button class="cat-btn" onclick="selectCategory('Laptops', this)">Laptops</button>
-        <button class="cat-btn" onclick="selectCategory('Audio & Headphones', this)">Audio</button>
-        <button class="cat-btn" onclick="selectCategory('Gaming Accessories', this)">Gaming</button>
+  <!-- Amazon-style Sub Navigation Bar -->
+  <nav class="category-nav">
+    <div class="category-nav-container">
+      <a href="#special-offers" class="nav-tab active-tab"><i class="fa-solid fa-bolt"></i> Today's Deals</a>
+      <a href="#smartphones" class="nav-tab"><i class="fa-solid fa-mobile-screen-button"></i> Smartphones</a>
+      <a href="#laptops" class="nav-tab"><i class="fa-solid fa-laptop"></i> Laptops</a>
+      <a href="#audio" class="nav-tab"><i class="fa-solid fa-headphones"></i> Audio & Headphones</a>
+      <a href="#wearables" class="nav-tab"><i class="fa-solid fa-stopwatch"></i> Smartwatches</a>
+      <a href="#gaming" class="nav-tab"><i class="fa-solid fa-gamepad"></i> Gaming Accessories</a>
     </div>
+  </nav>
 
-    <!-- Product Grid (Populated dynamically via script.js) -->
-    <div class="product-grid" id="productGrid"></div>
+  <!-- Main Showcase Container -->
+  <main class="main-body">
 
-    <!-- Express Checkout Modal with Credit Card Inputs -->
-    <div class="modal" id="checkoutModal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 style="margin-bottom: 0.5rem; color: var(--neon-cyan);">Express Checkout</h2>
-            <p id="checkoutProduct" style="margin-bottom: 1.2rem; color: var(--text-muted); font-size: 0.9rem;"></p>
-            
-            <form onsubmit="handlePayment(event)">
-                <div class="form-group">
-                    <label>Cardholder Name</label>
-                    <input type="text" required placeholder="John Doe">
-                </div>
-                <div class="form-group">
-                    <label>Card Number</label>
-                    <input type="text" required placeholder="4532 •••• •••• 8892" maxlength="19">
-                </div>
-                <div style="display: flex; gap: 1rem;">
-                    <div class="form-group" style="flex:1;">
-                        <label>Expiry</label>
-                        <input type="text" required placeholder="MM/YY">
-                    </div>
-                    <div class="form-group" style="flex:1;">
-                        <label>CVV</label>
-                        <input type="password" required placeholder="•••" maxlength="4">
-                    </div>
-                </div>
-                <button type="submit" class="btn-buy" style="width: 100%; margin-top: 1rem; padding: 0.8rem;">Pay & Confirm Order</button>
-            </form>
+    <!-- Hero / Highlight Banner -->
+    <section class="hero-section" id="special-offers">
+      <div class="hero-content">
+        <span class="badge-hero"><i class="fa-solid fa-star"></i> Featured Arrival</span>
+        <h1>NEXT-GEN TECH <span>HUB</span></h1>
+        <p>Upgrade your workflow and gaming setup with the world's most powerful electronics.</p>
+        <div class="hero-buttons">
+          <a href="#smartphones" class="touch-btn btn-primary"><i class="fa-solid fa-bag-shopping"></i> Shop Flagships</a>
+          <a href="#gaming" class="touch-btn btn-secondary"><i class="fa-solid fa-gamepad"></i> Gaming Zone</a>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- Link to JavaScript file -->
-    <script src="script.js"></script>
+    <!-- SECTION 1: SMARTPHONES -->
+    <section class="section-container" id="smartphones">
+      <div class="section-title-bar">
+        <h2><i class="fa-solid fa-mobile-screen-button"></i> Flagship Smartphones</h2>
+        <a href="#smartphones" class="see-more">See all models &rarr;</a>
+      </div>
+     
+      <div class="product-grid">
+
+        <!-- Product 1 -->
+        <div class="product-card" data-id="phone1" data-name="Apex Ultra 5G Pro" data-price="999.99" data-img="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80">
+          <span class="badge offer-badge">Save $150</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400&q=80" alt="Apex Ultra 5G Pro">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">Apex Ultra 5G Pro</h3>
+            <p class="product-desc">6.8" 120Hz Dynamic AMOLED display, 200MP camera system, 5000mAh battery.</p>
+            <div class="price-box">
+              <span class="current-price">$999.99</span>
+              <span class="old-price">$1,149.99</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-id="phone2" data-name="Nova Fold Z Titanium" data-price="1399.00" data-img="https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=400&q=80">
+          <span class="badge new-badge">New Arrival</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1580910051074-3eb694886505?auto=format&fit=crop&w=400&q=80" alt="Nova Fold Z">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">Nova Fold Z Titanium</h3>
+            <p class="product-desc">Dual screen folding glass technology, multi-tasking split UI, ultra-sleek hinge.</p>
+            <div class="price-box">
+              <span class="current-price">$1,399.00</span>
+            </div>
+            <span class="availability low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Only 3 left</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-id="phone3" data-name="Pixelate Neo 8" data-price="599.99" data-img="https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=400&q=80">
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=400&q=80" alt="Pixelate Neo 8">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">Pixelate Neo 8</h3>
+            <p class="product-desc">AI-powered portrait photography, pure stock Android OS, fast 65W charging.</p>
+            <div class="price-box">
+              <span class="current-price">$599.99</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: LAPTOPS -->
+    <section class="section-container" id="laptops">
+      <div class="section-title-bar">
+        <h2><i class="fa-solid fa-laptop"></i> High-Performance Laptops</h2>
+        <a href="#laptops" class="see-more">See all laptops &rarr;</a>
+      </div>
+
+      <div class="product-grid">
+
+        <!-- Product 1 -->
+        <div class="product-card" data-id="lap1" data-name="BladeBook Carbon 14" data-price="1299.00" data-img="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80">
+          <span class="badge offer-badge">Top Seller</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80" alt="BladeBook Carbon 14">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">BladeBook Carbon 14</h3>
+            <p class="product-desc">Ultra-lightweight chassis, M-series processor, 16GB RAM, 1TB NVMe SSD.</p>
+            <div class="price-box">
+              <span class="current-price">$1,299.00</span>
+              <span class="old-price">$1,499.00</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-id="lap2" data-name="Titan RTX 16 Gaming Laptop" data-price="2199.99" data-img="https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=400&q=80">
+          <span class="badge new-badge">Hot</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=400&q=80" alt="Titan RTX Gaming Laptop">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">Titan RTX 16 Gaming Laptop</h3>
+            <p class="product-desc">Intel i9, RTX 4080 graphics, 240Hz display built for extreme gaming performance.</p>
+            <div class="price-box">
+              <span class="current-price">$2,199.99</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-id="lap3" data-name="FlexStudio Air 15" data-price="899.00" data-img="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=400&q=80">
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=400&q=80" alt="FlexStudio Air">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">FlexStudio Air 15</h3>
+            <p class="product-desc">360-degree touchscreen convertible laptop with digital stylus inclusion.</p>
+            <div class="price-box">
+              <span class="current-price">$899.00</span>
+            </div>
+            <span class="availability out-of-stock"><i class="fa-solid fa-circle-xmark"></i> Out of Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart" disabled><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now" disabled>Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: AUDIO & HEADPHONES -->
+    <section class="section-container" id="audio">
+      <div class="section-title-bar">
+        <h2><i class="fa-solid fa-headphones"></i> Audio & Headphones</h2>
+        <a href="#audio" class="see-more">See all audio &rarr;</a>
+      </div>
+
+      <div class="product-grid">
+
+        <!-- Product 1 -->
+        <div class="product-card" data-id="aud1" data-name="SonicPro Wireless ANC Headphones" data-price="299.00" data-img="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80">
+          <span class="badge offer-badge">Deal</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" alt="SonicPro Wireless ANC">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">SonicPro ANC Headphones</h3>
+            <p class="product-desc">Active Noise Cancellation, 40-hour battery life, spatial audio drivers.</p>
+            <div class="price-box">
+              <span class="current-price">$299.00</span>
+              <span class="old-price">$349.00</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-id="aud2" data-name="AeroBuds Pro Earbuds" data-price="179.99" data-img="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80">
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80" alt="AeroBuds Pro">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">AeroBuds Pro Earbuds</h3>
+            <p class="product-desc">Compact wireless earbuds with wireless charging case & IPX7 waterproof rating.</p>
+            <div class="price-box">
+              <span class="current-price">$179.99</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-id="aud3" data-name="StudioSound Soundbar 300W" data-price="399.00" data-img="https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=400&q=80">
+          <span class="badge new-badge">New</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=400&q=80" alt="StudioSound Soundbar">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">StudioSound Soundbar 300W</h3>
+            <p class="product-desc">Dolby Atmos home theater soundbar with wireless subwoofer included.</p>
+            <div class="price-box">
+              <span class="current-price">$399.00</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4: SMARTWATCHES / WEARABLES -->
+    <section class="section-container" id="wearables">
+      <div class="section-title-bar">
+        <h2><i class="fa-solid fa-stopwatch"></i> Smartwatches & Wearables</h2>
+        <a href="#wearables" class="see-more">See all wearables &rarr;</a>
+      </div>
+
+      <div class="product-grid">
+
+        <!-- Product 1 -->
+        <div class="product-card" data-id="wear1" data-name="ChronoFit Ultra Watch" data-price="249.99" data-img="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80">
+          <span class="badge new-badge">New</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80" alt="ChronoFit Ultra Watch">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">ChronoFit Ultra Watch</h3>
+            <p class="product-desc">ECG monitoring, GPS tracking, titanium casing, and 7-day battery endurance.</p>
+            <div class="price-box">
+              <span class="current-price">$249.99</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-id="wear2" data-name="PulseBand HR Tracker" data-price="89.99" data-img="https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=400&q=80">
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=400&q=80" alt="PulseBand HR Tracker">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">PulseBand HR Tracker</h3>
+            <p class="product-desc">Lightweight fitness tracker with continuous heart rate and sleep tracking.</p>
+            <div class="price-box">
+              <span class="current-price">$89.99</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-id="wear3" data-name="AeroVR Smart Glasses" data-price="499.00" data-img="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=400&q=80">
+          <span class="badge offer-badge">Hot</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&fit=crop&w=400&q=80" alt="AeroVR Smart Glasses">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">AeroVR Smart Glasses</h3>
+            <p class="product-desc">Augmented reality display glasses with open-ear audio speakers built in.</p>
+            <div class="price-box">
+              <span class="current-price">$499.00</span>
+              <span class="old-price">$549.00</span>
+            </div>
+            <span class="availability low-stock"><i class="fa-solid fa-triangle-exclamation"></i> Only 1 left</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 5: GAMING ACCESSORIES -->
+    <section class="section-container" id="gaming">
+      <div class="section-title-bar">
+        <h2><i class="fa-solid fa-gamepad"></i> Gaming Accessories</h2>
+        <a href="#gaming" class="see-more">See all gaming gear &rarr;</a>
+      </div>
+
+      <div class="product-grid">
+
+        <!-- Product 1 -->
+        <div class="product-card" data-id="game1" data-name="Viper Pro Mechanical Keyboard" data-price="139.99" data-img="https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=400&q=80">
+          <span class="badge offer-badge">Best Seller</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=400&q=80" alt="Viper Pro Keyboard">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">Viper Pro Keyboard</h3>
+            <p class="product-desc">RGB per-key mechanical keyboard with ultra-fast optical switches.</p>
+            <div class="price-box">
+              <span class="current-price">$139.99</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card" data-id="game2" data-name="Ghost Precision Wireless Mouse" data-price="79.99" data-img="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=400&q=80">
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=400&q=80" alt="Ghost Mouse">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">Ghost Wireless Mouse</h3>
+            <p class="product-desc">26k DPI optical sensor, ultra-light 58g body design for esports competition.</p>
+            <div class="price-box">
+              <span class="current-price">$79.99</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card" data-id="game3" data-name="Nexus Pro Game Controller" data-price="69.99" data-img="https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?auto=format&fit=crop&w=400&q=80">
+          <span class="badge new-badge">New</span>
+          <div class="product-img-box">
+            <img src="https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?auto=format&fit=crop&w=400&q=80" alt="Nexus Controller">
+          </div>
+          <div class="product-details">
+            <h3 class="product-title">Nexus Pro Game Controller</h3>
+            <p class="product-desc">Hall-effect anti-drift joysticks, remappable back triggers, multi-platform.</p>
+            <div class="price-box">
+              <span class="current-price">$69.99</span>
+            </div>
+            <span class="availability in-stock"><i class="fa-solid fa-circle-check"></i> In Stock</span>
+            <div class="button-group">
+              <button class="touch-btn btn-add-cart"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+              <button class="touch-btn btn-buy-now">Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Slide-Out Shopping Cart Drawer -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3><i class="fa-solid fa-cart-shopping"></i> Shopping Cart (<span id="cartItemCount">0</span>)</h3>
+      <button class="close-cart-btn" id="closeCart">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItemsList">
+      <div class="cart-empty-state">
+        <i class="fa-solid fa-basket-shopping"></i>
+        <p>Your cart is empty.</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal:</span>
+        <strong id="cartTotalPrice">$0.00</strong>
+      </div>
+      <button class="touch-btn checkout-btn" id="checkoutBtn"><i class="fa-solid fa-lock"></i> Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- Checkout Modal (Address & Payment Details) -->
+  <div class="checkout-modal-overlay" id="checkoutModalOverlay">
+    <div class="checkout-modal">
+      <div class="checkout-modal-header">
+        <h3><i class="fa-solid fa-shield-halved"></i> Checkout & Payment</h3>
+        <button class="close-modal-btn" id="closeCheckoutModal">&times;</button>
+      </div>
+      <form id="checkoutForm" class="checkout-form">
+        <h4>Shipping Address</h4>
+        <div class="form-group">
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" required placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label for="address">Delivery Address</label>
+
+          <input type="text" id="address" required placeholder="50/A, Wennappuwa">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+
+            <input type="tel" id="phone" required placeholder="0769326681">
+          </div>
+          <div class="form-group">
+            <label for="city">City</label>
+
+            <input type="text" id="city" required placeholder="Wennappuwa">
+          </div>
+        </div>
+
+        <h4>Payment Details</h4>
+        <div class="form-group">
+          <label for="cardName">Name on Card</label>
+          <input type="text" id="cardName" required placeholder="John Doe">
+        </div>
+        <div class="form-group">
+          <label for="cardNumber">Card Number</label>
+
+          <input type="text" id="cardNumber" required placeholder="1234 5678 9101 1121" maxlength="19">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cardExp">Expiry Date</label>
+
+            <input type="text" id="cardExp" required placeholder="MM/YY" maxlength="5">
+          </div>
+          <div class="form-group">
+            <label for="cardCvv">CVV</label>
+
+            <input type="password" id="cardCvv" required placeholder="123" maxlength="4">
+          </div>
+        </div>
+
+        <button type="submit" class="touch-btn checkout-btn" style="margin-top: 15px;">
+          <i class="fa-solid fa-credit-card"></i> Pay Now
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast-popup" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastText">Item added to cart!</span>
+  </div>
+
+  <!-- Tech-themed Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>Tech<span>Zone</span></h3>
+        <p>Your ultimate destination for genuine tech products, electronics, and next-gen gear with fast global delivery.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Categories</h4>
+        <a href="#smartphones">Smartphones</a>
+        <a href="#laptops">Laptops</a>
+        <a href="#audio">Audio & Headphones</a>
+        <a href="#wearables">Smartwatches</a>
+        <a href="#gaming">Gaming Gear</a>
+      </div>
+      <div class="footer-column">
+        <h4>Customer Care</h4>
+        <a href="#">Help & FAQs</a>
+        <a href="#">Order Tracking</a>
+        <a href="#">Returns & Warranty</a>
+        <a href="#">Shipping Rates</a>
+      </div>
+      <div class="footer-column">
+        <h4>Contact Us</h4>
+        <p><i class="fa-solid fa-location-dot"></i> 50/A, Wennappuwa</p>
+        <p><i class="fa-solid fa-phone"></i> 0769326681</p>
+        <p><i class="fa-solid fa-envelope"></i> support@techzone.com</p>
+        <p><i class="fa-solid fa-shield-halved"></i> 100% Secure Checkout</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 TechZone Gadget Store. All Rights Reserved. Designed for Tech Enthusiasts.
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
 
