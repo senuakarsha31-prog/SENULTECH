@@ -1,140 +1,145 @@
-const products = [
-    // --- SMARTPHONES ---
-    { 
-        name: 'Samsung Galaxy S24 Ultra', 
-        cat: 'Smartphones', 
-        price: '$1,299', 
-        status: 'In Stock', 
-        tag: 'Flagship', 
-        desc: '6.8-inch Dynamic AMOLED 2X, Snapdragon 8 Gen 3, Built-in S-Pen.',
-        img: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500&auto=format&fit=crop' 
-    },
-    { 
-        name: 'Apple iPhone 15 Pro Max', 
-        cat: 'Smartphones', 
-        price: '$1,199', 
-        status: 'In Stock', 
-        tag: 'Best Seller', 
-        desc: 'Titanium design, A17 Pro chip, 5x Telephoto camera.',
-        img: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&auto=format&fit=crop' 
-    },
-    { 
-        name: 'ASUS ROG Phone 8 Pro', 
-        cat: 'Smartphones', 
-        price: '$1,199', 
-        status: 'Low Stock', 
-        tag: 'Gaming Beast', 
-        desc: '165Hz AMOLED display, AirTrigger controls, Snapdragon 8 Gen 3.',
-        img: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop' 
-    },
-    { 
-        name: 'Google Pixel 8 Pro', 
-        cat: 'Smartphones', 
-        price: '$999', 
-        status: 'In Stock', 
-        tag: 'AI Phone', 
-        desc: 'Google Tensor G3 chip, best-in-class computational photography.',
-        img: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&auto=format&fit=crop' 
-    },
+document.addEventListener('DOMContentLoaded', () => {
+  let shoppingCart = [];
 
-    // --- SMARTWATCHES ---
-    { 
-        name: 'Apple Watch Series 9', 
-        cat: 'Smartwatches / Wearables', 
-        price: '$399', 
-        status: 'In Stock', 
-        tag: 'Popular', 
-        desc: 'S9 SiP chip, Double Tap gesture, brighter display.',
-        img: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&auto=format&fit=crop' 
-    },
-    { 
-        name: 'Apple Watch Ultra 2', 
-        cat: 'Smartwatches / Wearables', 
-        price: '$799', 
-        status: 'In Stock', 
-        tag: 'Rugged', 
-        desc: '49mm titanium case, 100m water resistance, dual-frequency GPS.',
-        img: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop' 
-    },
-    { 
-        name: 'Samsung Galaxy Watch 6 Classic', 
-        cat: 'Smartwatches / Wearables', 
-        price: '$399', 
-        status: 'In Stock', 
-        tag: 'Rotating Bezel', 
-        desc: 'Advanced sleep tracking, BioActive sensor, sapphire crystal glass.',
-        img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop' 
-    },
-    { 
-        name: 'Samsung Galaxy Watch 6', 
-        cat: 'Smartwatches / Wearables', 
-        price: '$299', 
-        status: 'In Stock', 
-        tag: 'Best Value', 
-        desc: 'Sleek aluminum frame, body composition analysis, personalized HR zones.',
-        img: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500&auto=format&fit=crop' 
+  const cartToggleBtn = document.getElementById('cartToggle');
+  const cartDrawer = document.getElementById('cartDrawer');
+  const cartOverlay = document.getElementById('cartOverlay');
+  const closeCartBtn = document.getElementById('closeCart');
+  const cartBadge = document.getElementById('cartBadge');
+  const cartItemCount = document.getElementById('cartItemCount');
+  const cartItemsList = document.getElementById('cartItemsList');
+  const cartTotalPrice = document.getElementById('cartTotalPrice');
+  const toast = document.getElementById('toast');
+  const toastText = document.getElementById('toastText');
+  const searchInput = document.getElementById('searchInput');
+
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const checkoutModalOverlay = document.getElementById('checkoutModalOverlay');
+  const closeCheckoutModal = document.getElementById('closeCheckoutModal');
+  const checkoutForm = document.getElementById('checkoutForm');
+
+  // Toggle Cart Drawer
+  const openCart = () => {
+    cartDrawer.classList.add('active');
+    cartOverlay.classList.add('active');
+  };
+
+  const closeCart = () => {
+    cartDrawer.classList.remove('active');
+    cartOverlay.classList.remove('active');
+  };
+
+  cartToggleBtn.addEventListener('click', openCart);
+  closeCartBtn.addEventListener('click', closeCart);
+  cartOverlay.addEventListener('click', closeCart);
+
+  // Toggle Checkout Modal
+  const openCheckoutModal = () => {
+    if (shoppingCart.length === 0) {
+      triggerToast('Your cart is empty!');
+      return;
     }
-];
+    closeCart();
+    checkoutModalOverlay.classList.add('active');
+  };
 
-let currentCat = 'All';
+  const closeCheckout = () => {
+    checkoutModalOverlay.classList.remove('active');
+  };
 
-function renderProducts() {
-    const grid = document.getElementById('productGrid');
-    const search = document.getElementById('searchInput').value.toLowerCase();
-    grid.innerHTML = '';
+  checkoutBtn.addEventListener('click', openCheckoutModal);
+  closeCheckoutModal.addEventListener('click', closeCheckout);
 
-    products.filter(p => {
-        const matchesCat = currentCat === 'All' || p.cat === currentCat;
-        const matchesSearch = p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search);
-        return matchesCat && matchesSearch;
-    }).forEach(p => {
-        grid.innerHTML += `
-            <div class="card">
-                <div class="card-img-wrapper">
-                    <img src="${p.img}" alt="${p.name}" class="card-img" />
-                    <span class="card-tag tag-offer">${p.tag}</span>
-                </div>
-                <div class="card-body">
-                    <h3>${p.name}</h3>
-                    <p>${p.desc}</p>
-                </div>
-                <div>
-                    <span class="card-tag tag-stock">${p.status}</span>
-                    <div class="price-row">
-                        <span class="price">${p.price}</span>
-                        <button class="btn-buy" onclick="openModal('${p.name}', '${p.price}')">Buy Now</button>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-}
-
-function selectCategory(cat, btn) {
-    currentCat = cat;
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderProducts();
-}
-
-function filterProducts() { 
-    renderProducts(); 
-}
-
-function openModal(name, price) {
-    document.getElementById('checkoutProduct').innerText = `Item: ${name} (${price})`;
-    document.getElementById('checkoutModal').style.display = 'flex';
-}
-
-function closeModal() { 
-    document.getElementById('checkoutModal').style.display = 'none'; 
-}
-
-function handlePayment(e) {
+  checkoutForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    alert('⚡ Payment Successful! Order confirmed.');
-    closeModal();
-}
+    shoppingCart = [];
+    renderCart();
+    closeCheckout();
+    checkoutForm.reset();
+    triggerToast('Order placed successfully!');
+  });
 
-renderProducts();
+  // Add Item to Cart
+  document.querySelectorAll('.btn-add-cart').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const card = e.target.closest('.product-card');
+      const id = card.dataset.id;
+      const name = card.dataset.name;
+      const price = parseFloat(card.dataset.price);
+      const img = card.dataset.img;
+
+      addItemToCart(id, name, price, img);
+      triggerToast(`Added "${name}" to cart!`);
+    });
+  });
+
+  // Buy Now Action
+  document.querySelectorAll('.btn-buy-now').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const card = e.target.closest('.product-card');
+      const id = card.dataset.id;
+      const name = card.dataset.name;
+      const price = parseFloat(card.dataset.price);
+      const img = card.dataset.img;
+
+      addItemToCart(id, name, price, img);
+      openCheckoutModal();
+    });
+  });
+
+  function addItemToCart(id, name, price, img) {
+    const existing = shoppingCart.find(item => item.id === id);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      shoppingCart.push({ id, name, price, img, quantity: 1 });
+    }
+    renderCart();
+  }
+
+  function renderCart() {
+    const totalCount = shoppingCart.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = shoppingCart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    cartBadge.textContent = totalCount;
+    cartItemCount.textContent = totalCount;
+    cartTotalPrice.textContent = `$${totalPrice.toFixed(2)}`;
+
+    if (shoppingCart.length === 0) {
+      cartItemsList.innerHTML = `
+        <div class="cart-empty-state">
+          <i class="fa-solid fa-basket-shopping"></i>
+          <p>Your cart is empty.</p>
+        </div>`;
+      return;
+    }
+
+    cartItemsList.innerHTML = shoppingCart.map(item => `
+      <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px; background:#181b24; padding:8px; border-radius:6px;">
+        <img src="${item.img}" style="width:48px; height:48px; object-fit:cover; border-radius:4px;">
+        <div style="flex:1;">
+          <h4 style="font-size:0.85rem; margin-bottom:2px;">${item.name}</h4>
+          <span style="font-size:0.8rem; color:var(--accent-cyan);">$${item.price} x ${item.quantity}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function triggerToast(message) {
+    toastText.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2500);
+  }
+
+  // Live Product Filter
+  searchInput.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    document.querySelectorAll('.product-card').forEach(card => {
+      const title = card.dataset.name.toLowerCase();
+      card.style.display = title.includes(term) ? 'flex' : 'none';
+    });
+  });
+});
 
