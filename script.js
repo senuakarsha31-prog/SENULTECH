@@ -1,132 +1,74 @@
-// Catalog Data
 const products = [
-  { id: 1, name: "iPhone 15 Pro Max", category: "apple", price: 1199, image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500" },
-  { id: 2, name: "Samsung Galaxy S24 Ultra", category: "samsung", price: 1299, image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500" },
-  { id: 3, name: "iPhone 14", category: "apple", price: 699, image: "https://images.unsplash.com/photo-1663499482523-1c0c1bae4ce1?w=500" },
-  { id: 4, name: "Samsung Galaxy Z Fold 5", category: "samsung", price: 1799, image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=500" },
-  { id: 5, name: "Apple AirPods Pro (2nd Gen)", category: "accessories", price: 249, image: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500" },
-  { id: 6, name: "Samsung Galaxy Watch 6", category: "accessories", price: 299, image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500" }
+    { name: 'Quantum Phone Pro', cat: 'Smartphones', price: '$999', status: 'In Stock', tag: 'Special Offer', desc: '6.7-inch OLED 120Hz display with Neural Chipset.' },
+    { name: 'Nebula Fold X', cat: 'Smartphones', price: '$1,499', status: 'In Stock', tag: 'New Arrival', desc: 'Flexible AMOLED dual screen gadget.' },
+    { name: 'Pulse Lite 5G', cat: 'Smartphones', price: '$399', status: 'Low Stock', tag: 'In Stock', desc: 'Affordable high-speed 5G mobile.' },
+    { name: 'TitanBlade RTX Rig', cat: 'Laptops', price: '$2,499', status: 'In Stock', tag: 'Special Offer', desc: 'Intel i9, RTX 4090, 32GB RAM powerhouse.' },
+    { name: 'CyberBook Air M3', cat: 'Laptops', price: '$1,199', status: 'In Stock', tag: 'New Arrival', desc: 'Ultra-thin carbon fiber chassis.' },
+    { name: 'MatrixStation Pro', cat: 'Laptops', price: '$3,299', status: 'Pre-Order', tag: 'New Arrival', desc: 'Dual-screen workstation for creators.' },
+    { name: 'SonicPulse ANC', cat: 'Audio & Headphones', price: '$249', status: 'In Stock', tag: 'Special Offer', desc: 'Spatial audio with 40h battery life.' },
+    { name: 'NeuralEars TWS', cat: 'Audio & Headphones', price: '$179', status: 'In Stock', tag: 'In Stock', desc: 'Active Noise Canceling wireless earbuds.' },
+    { name: 'ChronoX Cyber Watch', cat: 'Smartwatches / Wearables', price: '$349', status: 'In Stock', tag: 'New Arrival', desc: 'Titanium bezel with biometric tracking.' },
+    { name: 'HoloVisor AR', cat: 'Smartwatches / Wearables', price: '$799', status: 'Pre-Order', tag: 'Special Offer', desc: 'Heads-up display augmented reality glasses.' },
+    { name: 'HyperClick RGB Board', cat: 'Gaming Accessories', price: '$149', status: 'In Stock', tag: 'In Stock', desc: 'Hot-swappable mechanical gaming keyboard.' },
+    { name: 'PrecisionAim Wireless', cat: 'Gaming Accessories', price: '$89', status: 'In Stock', tag: 'In Stock', desc: '26k DPI optical sensor mouse.' }
 ];
 
-let cart = [];
+let currentCat = 'All';
 
-// DOM Elements
-const productGrid = document.getElementById("productGrid");
-const cartDrawer = document.getElementById("cartDrawer");
-const backdrop = document.getElementById("backdrop");
-const openCartBtn = document.getElementById("openCartBtn");
-const closeCartBtn = document.getElementById("closeCartBtn");
-const cartCount = document.getElementById("cartCount");
-const drawerCount = document.getElementById("drawerCount");
-const cartItemsContainer = document.getElementById("cartItemsContainer");
-const cartTotal = document.getElementById("cartTotal");
-const searchInput = document.getElementById("searchInput");
-const filterBtns = document.querySelectorAll(".filter-btn");
+function renderProducts() {
+    const grid = document.getElementById('productGrid');
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    grid.innerHTML = '';
 
-// Render Products
-function renderProducts(items) {
-  productGrid.innerHTML = "";
-  if (items.length === 0) {
-    productGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">No products found matching your search.</p>`;
-    return;
-  }
-
-  items.forEach(product => {
-    const card = document.createElement("div");
-    card.className = "product-card";
-    card.innerHTML = `
-      <img src="${product.image}" alt="${product.name}">
-      <h3 class="product-title">${product.name}</h3>
-      <div class="product-price">$${product.price}</div>
-      <button class="add-btn" onclick="addToCart(${product.id})">Add to Cart</button>
-    `;
-    productGrid.appendChild(card);
-  });
+    products.filter(p => {
+        const matchesCat = currentCat === 'All' || p.cat === currentCat;
+        const matchesSearch = p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search);
+        return matchesCat && matchesSearch;
+    }).forEach(p => {
+        grid.innerHTML += `
+            <div class="card">
+                <div>
+                    <span class="card-tag tag-offer">${p.tag}</span>
+                    <h3>${p.name}</h3>
+                    <p>${p.desc}</p>
+                </div>
+                <div>
+                    <span class="card-tag tag-stock">${p.status}</span>
+                    <div class="price-row">
+                        <span class="price">${p.price}</span>
+                        <button class="btn-buy" onclick="openModal('${p.name}', '${p.price}')">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
 }
 
-// Add Item to Cart
-function addToCart(productId) {
-  const product = products.find(p => p.id === productId);
-  cart.push(product);
-  updateCartUI();
-  toggleCart(true);
+function selectCategory(cat, btn) {
+    currentCat = cat;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProducts();
 }
 
-// Remove Item from Cart
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  updateCartUI();
+function filterProducts() { 
+    renderProducts(); 
 }
 
-// Update Cart Display
-function updateCartUI() {
-  cartCount.textContent = cart.length;
-  drawerCount.textContent = cart.length;
-
-  if (cart.length === 0) {
-    cartItemsContainer.innerHTML = `<p class="empty-msg">Your cart is currently empty.</p>`;
-    cartTotal.textContent = "$0.00";
-    return;
-  }
-
-  cartItemsContainer.innerHTML = "";
-  let total = 0;
-
-  cart.forEach((item, index) => {
-    total += item.price;
-    const itemEl = document.createElement("div");
-    itemEl.className = "cart-item";
-    itemEl.innerHTML = `
-      <div class="cart-item-details">
-        <h4>${item.name}</h4>
-        <p>$${item.price}</p>
-      </div>
-      <button class="remove-btn" onclick="removeFromCart(${index})"><i class="fa-solid fa-trash"></i></button>
-    `;
-    cartItemsContainer.appendChild(itemEl);
-  });
-
-  cartTotal.textContent = `$${total.toFixed(2)}`;
+function openModal(name, price) {
+    document.getElementById('checkoutProduct').innerText = `Item: ${name} (${price})`;
+    document.getElementById('checkoutModal').style.display = 'flex';
 }
 
-// Toggle Cart Visibility
-function toggleCart(open) {
-  if (open) {
-    cartDrawer.classList.add("open");
-    backdrop.classList.add("active");
-  } else {
-    cartDrawer.classList.remove("open");
-    backdrop.classList.remove("active");
-  }
+function closeModal() { 
+    document.getElementById('checkoutModal').style.display = 'none'; 
 }
 
-// Filtering Logic
-filterBtns.forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelector(".filter-btn.active").classList.remove("active");
-    btn.classList.add("active");
-    
-    const cat = btn.dataset.category;
-    if (cat === "all") {
-      renderProducts(products);
-    } else {
-      renderProducts(products.filter(p => p.category === cat));
-    }
-  });
-});
+function handlePayment(e) {
+    e.preventDefault();
+    alert('⚡ Payment Successful! Order confirmed.');
+    closeModal();
+}
 
-// Search Logic
-searchInput.addEventListener("input", (e) => {
-  const query = e.target.value.toLowerCase();
-  const filtered = products.filter(p => p.name.toLowerCase().includes(query));
-  renderProducts(filtered);
-});
-
-// Event Listeners
-openCartBtn.addEventListener("click", () => toggleCart(true));
-closeCartBtn.addEventListener("click", () => toggleCart(false));
-backdrop.addEventListener("click", () => toggleCart(false));
-
-// Initialize
-renderProducts(products);
-
+// Initial render call when script loads
+renderProducts();
