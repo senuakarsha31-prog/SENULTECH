@@ -1,16 +1,79 @@
 const products = [
-    { name: 'Quantum Phone Pro', cat: 'Smartphones', price: '$999', status: 'In Stock', tag: 'Special Offer', desc: '6.7-inch OLED 120Hz display with Neural Chipset.' },
-    { name: 'Nebula Fold X', cat: 'Smartphones', price: '$1,499', status: 'In Stock', tag: 'New Arrival', desc: 'Flexible AMOLED dual screen gadget.' },
-    { name: 'Pulse Lite 5G', cat: 'Smartphones', price: '$399', status: 'Low Stock', tag: 'In Stock', desc: 'Affordable high-speed 5G mobile.' },
-    { name: 'TitanBlade RTX Rig', cat: 'Laptops', price: '$2,499', status: 'In Stock', tag: 'Special Offer', desc: 'Intel i9, RTX 4090, 32GB RAM powerhouse.' },
-    { name: 'CyberBook Air M3', cat: 'Laptops', price: '$1,199', status: 'In Stock', tag: 'New Arrival', desc: 'Ultra-thin carbon fiber chassis.' },
-    { name: 'MatrixStation Pro', cat: 'Laptops', price: '$3,299', status: 'Pre-Order', tag: 'New Arrival', desc: 'Dual-screen workstation for creators.' },
-    { name: 'SonicPulse ANC', cat: 'Audio & Headphones', price: '$249', status: 'In Stock', tag: 'Special Offer', desc: 'Spatial audio with 40h battery life.' },
-    { name: 'NeuralEars TWS', cat: 'Audio & Headphones', price: '$179', status: 'In Stock', tag: 'In Stock', desc: 'Active Noise Canceling wireless earbuds.' },
-    { name: 'ChronoX Cyber Watch', cat: 'Smartwatches / Wearables', price: '$349', status: 'In Stock', tag: 'New Arrival', desc: 'Titanium bezel with biometric tracking.' },
-    { name: 'HoloVisor AR', cat: 'Smartwatches / Wearables', price: '$799', status: 'Pre-Order', tag: 'Special Offer', desc: 'Heads-up display augmented reality glasses.' },
-    { name: 'HyperClick RGB Board', cat: 'Gaming Accessories', price: '$149', status: 'In Stock', tag: 'In Stock', desc: 'Hot-swappable mechanical gaming keyboard.' },
-    { name: 'PrecisionAim Wireless', cat: 'Gaming Accessories', price: '$89', status: 'In Stock', tag: 'In Stock', desc: '26k DPI optical sensor mouse.' }
+    // --- SMARTPHONES ---
+    { 
+        name: 'Samsung Galaxy S24 Ultra', 
+        cat: 'Smartphones', 
+        price: '$1,299', 
+        status: 'In Stock', 
+        tag: 'Flagship', 
+        desc: '6.8-inch Dynamic AMOLED 2X, Snapdragon 8 Gen 3, Built-in S-Pen.',
+        img: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500&auto=format&fit=crop' 
+    },
+    { 
+        name: 'Apple iPhone 15 Pro Max', 
+        cat: 'Smartphones', 
+        price: '$1,199', 
+        status: 'In Stock', 
+        tag: 'Best Seller', 
+        desc: 'Titanium design, A17 Pro chip, 5x Telephoto camera.',
+        img: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&auto=format&fit=crop' 
+    },
+    { 
+        name: 'ASUS ROG Phone 8 Pro', 
+        cat: 'Smartphones', 
+        price: '$1,199', 
+        status: 'Low Stock', 
+        tag: 'Gaming Beast', 
+        desc: '165Hz AMOLED display, AirTrigger controls, Snapdragon 8 Gen 3.',
+        img: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop' 
+    },
+    { 
+        name: 'Google Pixel 8 Pro', 
+        cat: 'Smartphones', 
+        price: '$999', 
+        status: 'In Stock', 
+        tag: 'AI Phone', 
+        desc: 'Google Tensor G3 chip, best-in-class computational photography.',
+        img: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500&auto=format&fit=crop' 
+    },
+
+    // --- SMARTWATCHES ---
+    { 
+        name: 'Apple Watch Series 9', 
+        cat: 'Smartwatches / Wearables', 
+        price: '$399', 
+        status: 'In Stock', 
+        tag: 'Popular', 
+        desc: 'S9 SiP chip, Double Tap gesture, brighter display.',
+        img: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&auto=format&fit=crop' 
+    },
+    { 
+        name: 'Apple Watch Ultra 2', 
+        cat: 'Smartwatches / Wearables', 
+        price: '$799', 
+        status: 'In Stock', 
+        tag: 'Rugged', 
+        desc: '49mm titanium case, 100m water resistance, dual-frequency GPS.',
+        img: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop' 
+    },
+    { 
+        name: 'Samsung Galaxy Watch 6 Classic', 
+        cat: 'Smartwatches / Wearables', 
+        price: '$399', 
+        status: 'In Stock', 
+        tag: 'Rotating Bezel', 
+        desc: 'Advanced sleep tracking, BioActive sensor, sapphire crystal glass.',
+        img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop' 
+    },
+    { 
+        name: 'Samsung Galaxy Watch 6', 
+        cat: 'Smartwatches / Wearables', 
+        price: '$299', 
+        status: 'In Stock', 
+        tag: 'Best Value', 
+        desc: 'Sleek aluminum frame, body composition analysis, personalized HR zones.',
+        img: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=500&auto=format&fit=crop' 
+    }
 ];
 
 let currentCat = 'All';
@@ -27,8 +90,11 @@ function renderProducts() {
     }).forEach(p => {
         grid.innerHTML += `
             <div class="card">
-                <div>
+                <div class="card-img-wrapper">
+                    <img src="${p.img}" alt="${p.name}" class="card-img" />
                     <span class="card-tag tag-offer">${p.tag}</span>
+                </div>
+                <div class="card-body">
                     <h3>${p.name}</h3>
                     <p>${p.desc}</p>
                 </div>
@@ -70,5 +136,4 @@ function handlePayment(e) {
     closeModal();
 }
 
-// Initial render call when script loads
 renderProducts();
